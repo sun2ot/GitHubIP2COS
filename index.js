@@ -12,10 +12,10 @@ var cos = new COS({
 });
 
 // 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。 https://console.cloud.tencent.com/cos5/bucket
-var Bucket = 'pic2cloud-1313199830';
+var Bucket = process.env.Bucket;
 // 存储桶Region可以在COS控制台指定存储桶的概览页查看 https://console.cloud.tencent.com/cos5/bucket/ 
 // 关于地域的详情见 https://cloud.tencent.com/document/product/436/6224
-var Region = 'ap-chengdu';
+var Region = process.env.Region;
 
 const metaPath = path.join(__dirname, 'tmp', 'ghip.yaml');
 const ghDitectPath = path.join(__dirname, 'tmp', 'gh520.yaml');
@@ -62,7 +62,7 @@ ${mergedArray.map(ipcidr => `  - ${ipcidr}`).join('\n')}
  */
 function getHost(hostCallback) {
     // 从 GitHub520 Repo 获取 Hosts 文件
-    axios.get('https://ghproxy.954001.xyz/https://raw.githubusercontent.com/521xueweihan/GitHub520/main/hosts')
+    axios.get('https://raw.githubusercontent.com/521xueweihan/GitHub520/main/hosts')
     .then(response => {
         const hosts = response.data;
         // 从 hosts 文件中提取 IP 地址
@@ -108,8 +108,8 @@ function uploadCOS(fileName, filePath) {
 function scheduleDaily() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
-    rule.hour = 12; 
-    rule.minute = 3;
+    rule.hour = 10; 
+    rule.minute = 10;
     rule.tz = 'Asia/Shanghai'
     const job = schedule.scheduleJob(rule, () => {
         getData(uploadCOS)
