@@ -12,6 +12,8 @@
 ```
 SecretId=''
 SecretKey=''
+Bucket=''
+Region='ap-chengdu'
 ```
 
 下载依赖
