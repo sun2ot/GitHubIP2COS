@@ -1,0 +1,26 @@
+{
+  "name": "github-hosts",
+  "version": "1.0.0",
+  "description": "get github hosts and push to tencent cos as a Clash subscribe link.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "clash",
+    "cos",
+    "github",
+    "host"
+  ],
+  "author": "sun2ot",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cos-nodejs-sdk-v5": "^2.12.1",
+    "dotenv": "^16.0.3",
+    "ip-range-check": "^0.2.0",
+    "ip-subnet-calculator": "^1.1.8",
+    "js-yaml": "^4.1.0",
+    "node-schedule": "^2.1.1"
+  }
+}
