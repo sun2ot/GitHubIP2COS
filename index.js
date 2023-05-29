@@ -112,7 +112,7 @@ function scheduleDaily() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
     rule.hour = 11; 
-    rule.minute = 45;
+    rule.minute = 57;
     rule.tz = 'Asia/Shanghai'
     const job = schedule.scheduleJob(rule, async () => {
         try {
@@ -128,7 +128,7 @@ function deploy() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
     rule.hour = 11; 
-    rule.minute = 46;
+    rule.minute = 58;
     rule.tz = 'Asia/Shanghai'
     const job = schedule.scheduleJob(rule, async () => {
         try {
