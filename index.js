@@ -2,6 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const schedule = require('node-schedule');
+const { exec } = require('child_process');
 var COS = require('cos-nodejs-sdk-v5');
 require('dotenv').config()
 
@@ -19,12 +20,14 @@ var Region = process.env.Region;
 
 const metaPath = path.join(__dirname, 'tmp', 'ghip.yaml');
 const ghDitectPath = path.join(__dirname, 'tmp', 'gh520.yaml');
+const scriptPath = './deploy.sh';
+
 
 /**
  * 
  * @param {uploadCOS} metaCallback 
  */
-function getData(metaCallback) {
+async function getData(metaCallback) {
     // 从 GitHub API 获取 IP
     axios.get('https://api.github.com/meta')
     .then(response => {
@@ -60,7 +63,7 @@ ${mergedArray.map(ipcidr => `  - ${ipcidr}`).join('\n')}
 /**
  * @param {uploadCOS} hostCallback 
  */
-function getHost(hostCallback) {
+async function getHost(hostCallback) {
     // 从 GitHub520 Repo 获取 Hosts 文件
     axios.get('https://raw.githubusercontent.com/521xueweihan/GitHub520/main/hosts')
     .then(response => {
@@ -108,13 +111,43 @@ function uploadCOS(fileName, filePath) {
 function scheduleDaily() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
-    rule.hour = 10; 
-    rule.minute = 10;
+    rule.hour = 11; 
+    rule.minute = 45;
     rule.tz = 'Asia/Shanghai'
-    const job = schedule.scheduleJob(rule, () => {
-        getData(uploadCOS)
-        getHost(uploadCOS)
+    const job = schedule.scheduleJob(rule, async () => {
+        try {
+          await getData(uploadCOS);
+          await getHost(uploadCOS);
+        } catch (error) {
+          console.error(error);
+        }
     });
-  }
+}
+
+function deploy() {
+    const rule = new schedule.RecurrenceRule();
+    // 规定每天的10点10分执行
+    rule.hour = 11; 
+    rule.minute = 46;
+    rule.tz = 'Asia/Shanghai'
+    const job = schedule.scheduleJob(rule, async () => {
+        try {
+          await new Promise((resolve, reject) => {
+            exec(`sh ${scriptPath}`, (error, stdout, stderr) => {
+              if (error) {
+                reject(`执行 Shell 脚本时出错：${error}`);
+              } else {
+                console.log(`Shell 脚本的标准输出：${stdout}`);
+                console.error(`Shell 脚本的错误输出：${stderr}`);
+                resolve();
+              }
+            });
+          });
+        } catch (error) {
+          console.error(error);
+        }
+    });
+}
 
 scheduleDaily();
+deploy()
