@@ -69,7 +69,7 @@ ${mergedArray.map(ipcidr => `  - ${ipcidr}`).join('\n')}
 async function getHost(hostCallback) {
   return new Promise((resolve, reject) => {
     // 从 GitHub520 Repo 获取 Hosts 文件
-    axios.get('https://ghproxy.954001.xyz/https://raw.githubusercontent.com/521xueweihan/GitHub520/main/hosts')
+    axios.get('https://raw.githubusercontent.com/521xueweihan/GitHub520/main/hosts')
     .then( async (response) => {
       const hosts = response.data;
       // 从 hosts 文件中提取 IP 地址
