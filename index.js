@@ -121,8 +121,8 @@ async function uploadCOS(fileName, filePath) {
 function scheduleDaily() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
-    rule.hour = 13; 
-    rule.minute = 5;
+    rule.hour = 10; 
+    rule.minute = 10;
     rule.tz = 'Asia/Shanghai'
     const job = schedule.scheduleJob(rule, async () => {
         try {
@@ -133,8 +133,8 @@ function scheduleDaily() {
               if (error) {
                 reject(`执行 Shell 脚本时出错：${error}`);
               } else {
-                console.log(`Shell 脚本的标准输出：${stdout}`);
-                console.error(`Shell 脚本的错误输出：${stderr}`);
+                console.log(`GitHub IP update success：${stdout}`);
+                //console.error(`Shell 脚本的错误输出：${stderr}`);
                 resolve();
               }
             });
