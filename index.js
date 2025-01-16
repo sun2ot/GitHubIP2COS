@@ -121,8 +121,8 @@ async function uploadCOS(fileName, filePath) {
 function scheduleDaily() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
-    rule.hour = 10; 
-    rule.minute = 10;
+    rule.hour = 9; 
+    rule.minute = 21;
     rule.tz = 'Asia/Shanghai'
     const job = schedule.scheduleJob(rule, async () => {
         try {
