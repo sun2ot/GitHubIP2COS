@@ -4,7 +4,9 @@ const path = require('path');
 const schedule = require('node-schedule');
 const { exec } = require('child_process');
 var COS = require('cos-nodejs-sdk-v5');
-require('dotenv').config()
+require('dotenv').config({
+  path: path.resolve(__dirname, '.env')  // 或者指定具体的路径，例如 '/deploy/GitHubIP2COS/.env'
+});
 
 // 创建实例
 var cos = new COS({
@@ -18,9 +20,11 @@ var Bucket = process.env.Bucket;
 // 关于地域的详情见 https://cloud.tencent.com/document/product/436/6224
 var Region = process.env.Region;
 
+console.log('Bucket:', Bucket);
+
 const metaPath = path.join(__dirname, 'tmp', 'ghip.yaml');
 const ghDitectPath = path.join(__dirname, 'tmp', 'gh520.yaml');
-const scriptPath = '/deploy/GitHubIP2COS/deploy.sh';
+const scriptPath = '/deploy/GitHubIP2COS';
 
 
 /**
@@ -121,15 +125,16 @@ async function uploadCOS(fileName, filePath) {
 function scheduleDaily() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
-    rule.hour = 10; 
-    rule.minute = 10;
+    rule.hour = 15; 
+    rule.minute = 00;
     rule.tz = 'Asia/Shanghai'
     const job = schedule.scheduleJob(rule, async () => {
         try {
           await getData(uploadCOS);
           await getHost(uploadCOS);
           await new Promise((resolve, reject) => {
-            exec(`sh ${scriptPath}`, (error, stdout, stderr) => {
+          process.chdir(scriptPath);  
+          exec(`sh ${scriptPath}/deploy.sh`, (error, stdout, stderr) => {
               if (error) {
                 reject(`执行 Shell 脚本时出错：${error}`);
               } else {
