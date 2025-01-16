@@ -20,7 +20,7 @@ var Region = process.env.Region;
 
 const metaPath = path.join(__dirname, 'tmp', 'ghip.yaml');
 const ghDitectPath = path.join(__dirname, 'tmp', 'gh520.yaml');
-const scriptPath = './deploy.sh';
+const scriptPath = '/deploy/GitHubIP2COS/deploy.sh';
 
 
 /**
