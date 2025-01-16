@@ -121,8 +121,8 @@ async function uploadCOS(fileName, filePath) {
 function scheduleDaily() {
     const rule = new schedule.RecurrenceRule();
     // 规定每天的10点10分执行
-    rule.hour = 9; 
-    rule.minute = 21;
+    rule.hour = 10; 
+    rule.minute = 10;
     rule.tz = 'Asia/Shanghai'
     const job = schedule.scheduleJob(rule, async () => {
         try {
@@ -145,30 +145,4 @@ function scheduleDaily() {
     });
 }
 
-// function deploy() {
-//     const rule = new schedule.RecurrenceRule();
-//     // 规定每天的10点11分执行
-//     rule.hour = 10; 
-//     rule.minute = 11;
-//     rule.tz = 'Asia/Shanghai'
-//     const job = schedule.scheduleJob(rule, async () => {
-//         try {
-//           await new Promise((resolve, reject) => {
-//             exec(`sh ${scriptPath}`, (error, stdout, stderr) => {
-//               if (error) {
-//                 reject(`执行 Shell 脚本时出错：${error}`);
-//               } else {
-//                 console.log(`Shell 脚本的标准输出：${stdout}`);
-//                 console.error(`Shell 脚本的错误输出：${stderr}`);
-//                 resolve();
-//               }
-//             });
-//           });
-//         } catch (error) {
-//           console.error(error);
-//         }
-//     });
-// }
-
 scheduleDaily();
-// deploy()
